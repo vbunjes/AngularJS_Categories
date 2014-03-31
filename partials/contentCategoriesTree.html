@@ -1,0 +1,159 @@
+<main-top-nav></main-top-nav>
+
+<!-- loading -->
+<main-spinner loaded="loaded"></main-spinner>
+
+<!-- No items -->
+<blockquote ng-show="!items && loaded">
+    <p>Geen onderdelen gevonden</p>
+    <a href="#/content/categories/add/{{root}}" class="btn btn-success"><i class="glyphicon glyphicon-plus"></i> Voeg
+        toe</a>
+</blockquote>
+
+
+<div id="list" ng-hide="!items" main-anchor-scroll>
+
+    <div id="tree">
+
+        <!-- Search and Filers-->
+        <content-categories-filters></content-categories-filters>
+
+        <!-- List -->
+        <blockquote>
+
+            <p>
+                <a href="#/content/categories/add/{{root}}" class="btn btn-success">
+                    <i class="glyphicon glyphicon-plus"></i> Voeg onderdeel toe</a>
+                <a href="#/content/categories/list" class="btn btn-info">
+                    <i class="glyphicon glyphicon-chevron-left"></i> Terug naar exposities overzicht</a>
+                <a href="#/content/categories/list" class="btn btn-default disabled">
+                    <i class="glyphicon glyphicon-book"></i> Expositie {{ item.name }}</a>
+
+
+            </p>
+
+            <span class="label label-success pull-left" ng-hide="!search.length">{{ cnt.length }} item(s) gevonden</span>
+            <span class="label label-warning pull-right">{{ items.length }} item(s) in totaal</span>
+
+            <table class="table table-hover table-stiped table-condensed">
+
+                <tr>
+
+                    <td><span class="label label-success pull-left">titel</span></td>
+                    <td><span class="label label-success pull-left">omschrijving</span></td>
+                    <td><span class="label label-success pull-left">plaatje</span>
+                    <td><span class="label label-success pull-left">content</span>
+                    </td>
+
+                    <td class="col-xs-1"></td>
+                    <td class="col-xs-1"></td>
+                    <td class="col-xs-1"></td>
+                    <td class="col-xs-1"></td>
+
+                    <td ng-hide="isAdmin()" class="col-xs-1"></td>
+
+                    <td class="col-xs-1"></td>
+                    <td class="col-xs-1"></td>
+                    <td class="col-xs-1"></td>
+
+                </tr>
+
+                <!-- Loop descendants -->
+                <tr ng-repeat="item in (cnt = (items | filter:search ))" main-row-highlight id="{{item.id}}"
+                    data-level="{{item.level}}">
+
+                    <td class="level_{{item.level}} col-xs-3">
+
+                        <i ng-show="item.publish" class="glyphicon glyphicon-ok"></i>
+                        <i ng-hide="item.publish" class="glyphicon glyphicon-flag" main-tool-tip="staat niet actief, is niet zichtbaar in expositie"></i>
+                        {{item.name}}
+                    </td>
+
+                    <td ng-bind-html="item.description | mainHtml"></td>
+
+                    <td>
+                        <a href="{{item.imageDisplay}}" target="_blank">
+                        <img class="img-circle preview" ng-src="{{item.imageDisplayThumbnail}}"
+                             ng-show="item.imageDisplayThumbnail">
+                        </a>
+                    </td>
+
+                    <td>
+
+                        <button main-tool-tip="Voeg Content toe aan {{item.name}}"
+                                ng-click="addContent(root, item.id)"
+                                class="glyphicon glyphicon-plus-sign btn btn-success"></button>
+
+                        <button main-tool-tip="Bekijk de Content voor {{item.name}}"
+                                ng-click="content(root, item.id)"
+                                class="glyphicon glyphicon-eye-open btn btn-info">
+                            {{item.contentCount}}
+                                </button>
+
+                    </td>
+
+                    <td>
+                        <i main-tool-tip="Verplaats {{item.name}} een helemaal omhoog"
+                           ng-show="item.isLastChild"
+                           ng-click="move(item.id, 'top')"
+                           class="glyphicon glyphicon-chevron-up btn btn-info"></i>
+
+                        <i main-tool-tip="Verplaats {{item.name}} een helemaal omlaag"
+                           ng-show="item.isFirstChild"
+                           ng-click="move(item.id, 'bottom')"
+                           class="glyphicon glyphicon-chevron-down btn btn-info"></i>
+                    </td>
+
+                    <td>
+                        <i main-tool-tip="Verplaats {{item.name}} een level omhoog"
+                           ng-hide="{{ item.level == 1 && item.hasParent }}"
+                           ng-click="move(item.id, 'left')"
+                           class="glyphicon glyphicon-arrow-left btn btn-default"></i></td>
+
+                    <td>
+                        <i main-tool-tip="Verplaats {{item.name}} een level omlaag"
+                           ng-show="item.hasNextSibling"
+                           ng-click="move(item.id, 'right')"
+                           class="glyphicon glyphicon-arrow-right btn btn-default"></i></td>
+
+                    <td>
+                        <i main-tool-tip="Verplaats {{item.name}} een rank omhoog"
+                           ng-show="item.hasPrevSibling"
+                           ng-click="move(item.id, 'up')"
+                           class="glyphicon glyphicon-arrow-up btn btn-default"></i>
+                    </td>
+
+                    <td>
+                        <i main-tool-tip="Verplaats {{item.name}} een rank omlaag"
+                           ng-show="item.hasNextSibling"
+                           ng-click="move(item.id, 'down')"
+                           class="glyphicon glyphicon-arrow-down btn btn-default"></i>
+                    </td>
+
+                    <td ng-hide="isAdmin()">
+                        <a main-tool-tip="Voeg sub toe aan {{item.name}}"
+                           href="#/content/categories/add/{{root}}/{{item.id}}"
+                           class="glyphicon glyphicon-share-alt btn btn-success"></a></td>
+
+                    <td>
+                        <button main-tool-tip="Bewerk {{item.name}} "
+                                ng-click="edit(item.id)"
+                                class="glyphicon glyphicon-pencil btn btn-warning"></i></button>
+                    </td>
+
+                    <td>
+                        <button main-tool-tip="Verwijder {{item.name}}"
+                                ng-click="remove(item)"
+                                class="glyphicon glyphicon-remove btn btn-danger "
+                                main-confirm-click="Deze case {{item.name}} verwijderen ?"></button>
+                    </td>
+                </tr>
+
+            </table>
+
+        </blockquote>
+
+    </div>
+</div>
+
+

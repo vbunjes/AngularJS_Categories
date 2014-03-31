@@ -1,0 +1,71 @@
+<main-top-nav></main-top-nav>
+
+<!-- loading -->
+<main-spinner loaded="loaded"></main-spinner>
+
+<!-- No items -->
+<blockquote ng-show="!items.length && loaded">
+    <p>Geen Exposities(s) gevonden</p>
+    <a href="#/content/categories/add" class="btn btn-success"><i class="glyphicon glyphicon-plus"></i> Voeg toe</a>
+</blockquote>
+
+
+<div id="list" ng-hide="!items.length" main-anchor-scroll>
+
+    <!-- Search and Filers-->
+    <content-categories-filters></content-categories-filters>
+
+    <!-- List -->
+    <blockquote>
+
+        <p>
+            <a ng-show="isAdmin" href="#/content/categories/add" class="btn btn-success"><i class="glyphicon glyphicon-plus"></i> Voeg Expositie toe</a>
+        </p>
+
+        <span class="label label-success pull-left" ng-hide="!search.length">{{ cnt.length }} item(s) gevonden</span>
+        <span class="label label-warning pull-right">{{ items.length }} item(s) in totaal</span>
+
+        <table class="table table-hover table-stiped table-condensed">
+
+            <tr main-sorting-element start-sort-with="-name" sort-filter="sortfilter">
+
+                <td main-sort-element="name" data-label="titel"></td>
+                <td main-sort-element="description" data-label="content"></td>
+                <td ng-show="item.imageDisplayThumbnail" main-sort-element="image" data-label="image"></td>
+                <td ng-show="isAdmin()" class="col-xs-1"></td>
+                <td class="col-xs-1"></td>
+                <td class="col-xs-1"></td>
+                <td ng-show="isAdmin()" class="col-xs-1"></td>
+            </tr>
+
+            <tr ng-repeat="item in (cnt = (items | filter:search | orderBy:sortfilter ))" main-row-highlight
+                id="{{item.id}}">
+                <td>
+                    <i ng-show="item.publish" class="glyphicon glyphicon-ok"></i>
+                    <i ng-hide="item.publish" class="glyphicon glyphicon-flag" main-tool-tip="staat niet actief, is niet zichtbaar in expositie"></i>
+                    {{item.name}}</td>
+                <td ng-bind-html="item.description | mainHtml"></td>
+                <td ng-show="item.imageDisplayThumbnail">
+                    <img class="img-circle preview" ng-src="{{item.imageDisplayThumbnail}}" ng-show="item.imageDisplayThumbnail">
+                </td>
+                <td ng-show="isAdmin()">
+                    <button main-tool-tip="Bekijk de content van {{item.name}}" ng-click="content(item.id)" class="glyphicon glyphicon-folder-open btn btn-info"></button>
+                </td>
+                <td>
+                    <button main-tool-tip="Bekijk expositie {{item.name}}" ng-click="tree(item.id)" class="glyphicon glyphicon-th-list btn btn-success"> </button>
+                </td>
+                <td>
+                    <button main-tool-tip="Bewerk {{item.name}}" ng-click="edit(item.id)" class="glyphicon glyphicon-pencil btn btn-warning"></button>
+                </td>
+                <td ng-show="isAdmin()">
+                    <button main-tool-tip="Verwijder {{item.name}}" ng-click="remove(item)" class="glyphicon glyphicon-remove btn btn-danger" main-confirm-click="Deze categorie verwijderen : {{item.name}}"></button>
+                </td>
+            </tr>
+
+        </table>
+
+    </blockquote>
+
+</div>
+
+

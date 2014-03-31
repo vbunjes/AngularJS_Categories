@@ -1,0 +1,33 @@
+<!-- Search and Filers-->
+<div class="well-small input-group input-group-lg" style="width: 100%">
+
+    <div class="row">
+        <div class="col-xs-8">
+            <main-search-element data-value="search" data-placeholder="Zoek"></main-search-element>
+        </div>
+
+        <div class="col-xs-4" ng-show="pager">
+            <main-select-element
+                    data-value="itemsPerPage"
+                    data-options="itemsPerPageOptions"
+                    data-label="false">
+            </main-select-element>
+        </div>
+
+        <div class="col-xs-4" ng-show="contentCategories">
+            <main-select-element
+                    data-value="selectedRoot"
+                    data-placeholder="Selecteer een expositie"
+                    data-options="contentCategories"
+                    data-label="false">
+            </main-select-element>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <main-pagination-element pager="pager"></main-pagination-element>
+        </div>
+    </div>
+
+</div>

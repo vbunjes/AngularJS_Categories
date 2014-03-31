@@ -1,0 +1,71 @@
+<main-top-nav xmlns="http://www.w3.org/1999/html"></main-top-nav>
+
+<!-- loading + saving-->
+<main-spinner loaded="loaded"></main-spinner>
+<main-spinner-saving data-inprogress="inProgress"></main-spinner-saving>
+
+<div id="edit" ng-hide="!item">
+
+    <blockquote ng-controller="contentCategoriesFiltersController">
+
+        <form name="form" ng-submit="handleForm(item, form)" novalidate  main-form-element>
+
+            <main-submit-Element
+                    data-name="Opslaan"
+                    data-returnurl="{{returnUrl}}">
+            </main-submit-Element>
+
+            <main-checkbox-element
+                    data-name="publish"
+                    data-label="activeren ?"
+                    data-value="item.publish">
+            </main-checkbox-element>
+
+            <main-text-element
+                    data-name="name"
+                    data-value="item.name"
+                    data-label="Titel"
+                    data-required="true"
+                    data-placeholder = "Vul een titel in">
+            </main-text-element>
+
+            <small class="error" ng-show="form.name.$dirty && !form.name.$focused && form.name.$error.required">
+                Titel is verplicht
+            </small>
+
+            <main-ckeditor-element
+                    data-name="description"
+                    data-value="item.description"
+                    data-label="Omschrijving"
+                    data-minlength="10"
+                    data-required="true"
+                    data-placeholder="Vul een omschrijving in">
+            </main-ckeditor-element>
+
+            <small class="error" ng-show="form.description.$dirty && !form.description.$focused && form.description.$error.required">
+                Vul een omschrijving in
+            </small>
+
+            <small class="error" ng-show="form.description.$dirty && !form.description.$focused && form.description.$error.minlength">
+                Omschrijving moet minimaal 10 tekens lang zijn
+            </small>
+
+
+            <main-file-element
+                    data-name="image"
+                    data-label="Plaatje"
+                    data-value="item.attributes.image.value"
+                    data-md5="item.attributes.image.md5"
+                    data-preview="item.imageDisplayThumbnail"
+                    data-type="image"
+                    data-directory="/files-db/contentcategories"
+                    data-placeholder="Maximaal 3MB">
+            </main-file-element>
+
+
+
+        </form>
+
+    </blockquote>
+
+</div>

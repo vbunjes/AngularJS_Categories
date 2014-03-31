@@ -1,0 +1,19 @@
+#list .btn-linked {
+    width: 100px;
+}
+
+#list #tree {
+
+}
+
+#list #tree .level_2 {
+    padding-left: 25px;
+}
+
+#list #tree .level_3 {
+    padding-left: 45px;
+}
+
+#list #tree .level_4 {
+    padding-left: 65px;
+}
